@@ -1,2 +1,9 @@
+# python
 pyvenv.cfg
 __pycache__
+
+# yarn
+node_modules/
+
+# pelican
+output/

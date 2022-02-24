@@ -32,5 +32,7 @@ DEFAULT_PAGINATION = 10
 
 TYPOGRIFY = True
 
+STATIC_PATHS = []
+
 PLUGIN_PATHS = ['plugins']
 PLUGINS = ['yarn']
