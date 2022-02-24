@@ -1,0 +1,30 @@
+{
+  "name": "devopsdisasters",
+  "version": "1.0.0",
+  "description": "JS assets for DevopsDisasters",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@openfonts/lato_latin": "^1.44.2",
+    "@openfonts/raleway_latin": "^1.44.1",
+    "bootstrap": "^4.6.1",
+    "jquery": "^3.6.0",
+    "popper.js": "^1.16.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefan-walluhn/devopsdisasters.pelican.git"
+  },
+  "author": "Stefan Walluhn",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/stefan-walluhn/devopsdisasters.pelican/issues"
+  },
+  "homepage": "https://github.com/stefan-walluhn/devopsdisasters.pelican#readme"
+}
