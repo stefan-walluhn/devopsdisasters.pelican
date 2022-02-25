@@ -2,12 +2,16 @@
 
 bin/pip:
 	python -m venv .
+	./bin/python -m pip install --upgrade pip
 
 bin/pelican: bin/pip requirements.txt
-	./bin/pip install --requirement requirements.txt
+	./bin/python -m pip install --requirement requirements.txt
+
+.PHONY: install
+install: bin/pelican
 
 .PHONY: output
-output: bin/pelican
+output: install
 	./bin/pelican content
 
 .PHONY: clean

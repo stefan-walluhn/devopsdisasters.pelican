@@ -1,4 +1,5 @@
 import logging
+import os
 import shutil
 import subprocess
 from pelican import signals
@@ -10,10 +11,15 @@ log = logging.getLogger(__name__)
 
 class YarnStaticGenerator(Generator):
     def __init__(self, context, settings, path, theme, output_path, **kwargs):
-        self.node_modules = settings.get('NODE_MODULES_PATH', 'node_modules')
-        self.yarn_executable = settings.get('YARN_EXECUTABLE', '/usr/bin/yarn')
-        self.yarn_args = settings.get('YARN_ARGS',
-                                      ['--production', '--silent'])
+        self.yarn_tmp_modules = settings.get('YARN_TMP_PATH', 'node_modules')
+        self.yarn_target_modules = os.path.join(
+            output_path, settings.get('YARN_TARGET_PATH', 'node_modules')
+        )
+        self.yarn_executable = settings.get('YARN_EXECUTABLE', 'yarn')
+        self.yarn_args = settings.get(
+            'YARN_ARGS',
+            ['--production', '--frozen-lockfile', '--silent']
+        )
 
         super(YarnStaticGenerator, self).__init__(
             context, settings, path, theme, output_path, **kwargs
@@ -24,7 +30,7 @@ class YarnStaticGenerator(Generator):
             subprocess.run(
                 [
                     self.yarn_executable, 'install',
-                    '--modules-folder', self.node_modules,
+                    '--modules-folder', self.yarn_tmp_modules,
                     *self.yarn_args
                 ],
                 capture_output=True,
@@ -38,7 +44,7 @@ class YarnStaticGenerator(Generator):
         log.debug('yarn succeeded')
 
     def generate_output(self, writer):
-        shutil.copytree(self.node_modules, self.output_path,
+        shutil.copytree(self.yarn_tmp_modules, self.yarn_target_modules,
                         ignore=shutil.ignore_patterns('.*'),
                         dirs_exist_ok=True)
 
