@@ -13,16 +13,29 @@ class YarnStaticGenerator(Generator):
         self.node_modules = settings.get('NODE_MODULES_PATH', 'node_modules')
         self.yarn_executable = settings.get('YARN_EXECUTABLE', '/usr/bin/yarn')
         self.yarn_args = settings.get('YARN_ARGS',
-                                      ['--modules-folder', self.node_modules,
-                                       '--production',
-                                       '--silent'])
+                                      ['--production', '--silent'])
 
         super(YarnStaticGenerator, self).__init__(
             context, settings, path, theme, output_path, **kwargs
         )
 
     def generate_context(self):
-        subprocess.run([self.yarn_executable, 'install', *self.yarn_args])
+        try:
+            subprocess.run(
+                [
+                    self.yarn_executable, 'install',
+                    '--modules-folder', self.node_modules,
+                    *self.yarn_args
+                ],
+                capture_output=True,
+                check=True,
+                encoding='utf-8'
+            )
+        except subprocess.CalledProcessError as e:
+            log.error('yarn failed: %s', e.stderr)
+            raise e
+
+        log.debug('yarn succeeded')
 
     def generate_output(self, writer):
         shutil.copytree(self.node_modules, self.output_path,
