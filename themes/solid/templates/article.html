@@ -18,14 +18,8 @@
 
 {% endblock %}
 
-{% block headline %}
-<div id="blue">
-  <div class="container">
-    <div class="row">
-      <h3>{{ article.title }}</h3>
-    </div>
-  </div>
-</div>
+{% block content_title %}
+<h3>{{ article.title }}</h3>
 {% endblock %}
 
 {% block content %}
