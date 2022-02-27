@@ -29,33 +29,33 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container content">
   <div class="row">
     <div class="col-md-8">
       {% if article.quote %}
       <h3 class="ctitle"><i>"{{ article.quote }}"</i></h3>
       {% endif %}
-      <p>
-        <csmall>Veröffentlicht: {{ article.locale_date }}</csmall> |
-        <csmall2>Von: {% for author in article.authors %}
-          <a href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a>
-          {% endfor %}
-        </csmall2>
-      </p>
+      <div class="article-info">
+        <time class="published" datetime="{{ article.date.isoformat() }}">Veröffentlicht: {{ article.locale_date }} </time> |
+        <address class="vcard author">Von:
+        {% for author in article.authors %}
+            <a class="url fn" href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a>
+        {% endfor %}
+        </address>
+      </div>
 
       {{ article.content }}
+
     </div>
     <div class="col-md-4">
-      <h4>Kategorien</h4>
-      <div class="hline"></div>
-      {% for category in categories %}
-      <p><a href="{{ SITEURL }}/{{ category[0].url }}">{{ category[0] }}</a></p>
-      {% endfor %}
       <h4>Tags</h4>
       <div class="hline"></div>
-      {% for tag in article.tags %}
-      <a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
-      {% endfor %}
+      <p>
+        {% for tag in article.tags %}{% include "includes/tag.html" %}{% endfor %}
+      </p>
+      <h4>Weitere Kategorien</h4>
+      <div class="hline"></div>
+      {% for category, articles in categories %}{% include "includes/category.html" %}{% endfor %}
     </div>
   </div>
 </div>
