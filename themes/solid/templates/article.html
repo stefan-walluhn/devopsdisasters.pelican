@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block html_lang %}{{ article.lang }}{% endblock %}
+
+{% block title %}{{ SITENAME }} - {{ article.title|striptags  }}{% endblock %}
+
+{% block head %}
+  {{ super() }}
+
+  {% if article.description %}
+    <meta name="description" content="{{article.description}}" />
+  {% endif %}
+
+  {% for tag in article.tags %}
+    <meta name="tags" content="{{tag}}" />
+  {% endfor %}
+
+    <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/pygments.css" />
+
+{% endblock %}
+
+{% block headline %}
+<div id="blue">
+  <div class="container">
+    <div class="row">
+      <h3>{{ article.title }}</h3>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      {% if article.quote %}
+      <h3 class="ctitle"><i>"{{ article.quote }}"</i></h3>
+      {% endif %}
+      <p>
+        <csmall>Veröffentlicht: {{ article.locale_date }}</csmall> |
+        <csmall2>Von: {% for author in article.authors %}
+          <a href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a>
+          {% endfor %}
+        </csmall2>
+      </p>
+
+      {{ article.content }}
+    </div>
+    <div class="col-md-4">
+      <h4>Kategorien</h4>
+      <div class="hline"></div>
+      {% for category in categories %}
+      <p><a href="{{ SITEURL }}/{{ category[0].url }}">{{ category[0] }}</a></p>
+      {% endfor %}
+      <h4>Tags</h4>
+      <div class="hline"></div>
+      {% for tag in article.tags %}
+      <a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="spacing"></div>
+{% endblock %}

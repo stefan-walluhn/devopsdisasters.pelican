@@ -35,4 +35,6 @@ TYPOGRIFY = True
 STATIC_PATHS = []
 
 PLUGIN_PATHS = ['plugins']
-PLUGINS = ['yarn']
+PLUGINS = ['pygments_css', 'yarn']
+
+YARN_TARGET_PATH = 'js'

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="{% block html_lang %}{{ DEFAULT_LANG }}{% endblock html_lang %}">
+    <head>
+        {% block head %}
+        <meta charset="utf-8" />
+        <meta name="description" content="DevOps Disasters" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="generator" content="Pelican" />
+        <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+
+        {# Fonts #}
+        <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ YARN_TARGET_PATH }}/@openfonts/lato_latin/index.css" />
+        <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ YARN_TARGET_PATH }}/@openfonts/raleway_latin/index.css" />
+
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ YARN_TARGET_PATH }}/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ YARN_TARGET_PATH }}/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css" />
+
+        {% if FEED_ALL_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_ATOM_URL %}{{ FEED_ALL_ATOM_URL }}{% else %}{{ FEED_ALL_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom Feed" />
+        {% endif %}
+        {% if FEED_ALL_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_RSS_URL %}{{ FEED_ALL_RSS_URL }}{% else %}{{ FEED_ALL_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS Feed" />
+        {% endif %}
+        {% block extra_head %}{% endblock extra_head %}
+        {% endblock head %}
+    </head>
+
+    <body>
+        {% block header %}
+            {% include "includes/header.html" %}
+        {% endblock header %}
+
+        {% block headline %}
+            {% include "includes/headline.html" %}
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+
+        {% block footer %}
+            {% include "includes/footer.html" %}
+        {% endblock %}
+
+        {% block copyright %}
+            {% include "includes/copyright.html" %}
+        {% endblock %}
+
+        {# Global javascript #}
+        <script type="text/javascript" src="{{ SITEURL }}/{{ YARN_TARGET_PATH }}/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ SITEURL }}/{{ YARN_TARGET_PATH }}/bootstrap/dist/js/bootstrap.min.js"></script>
+    </body>
+</html>

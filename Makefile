@@ -12,7 +12,7 @@ install: bin/pelican
 
 .PHONY: output
 output: install
-	./bin/pelican content
+	./bin/pelican content -t themes/solid
 
 .PHONY: clean
 clean:
