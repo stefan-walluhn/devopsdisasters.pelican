@@ -1,18 +1,8 @@
 {% extends "base.html" %}
+{% import "macros/headline.html" as headline with context %}
 
 {% block headline %}
-<div id="headerwrap">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <h1>Call for Disasters: input[&aelig;t]devopsdisasters.net</h1>
-      </div>
-      <div class="col-md-8 offset-md-2 himg">
-        <img src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/home.jpg" class="img-responsive" />
-      </div>
-    </div>
-  </div>
-</div>
+{{ headline.with_image("Call for Disasters: input[&aelig;t]devopsdisasters.net") }}
 {% endblock headline %}
 
 {% block content %}

@@ -17,7 +17,10 @@ AUTHOR_FEED_RSS = None
 
 DEFAULT_PAGINATION = 10
 
-STATIC_PATHS = []
+STATIC_PATHS = ['static']
+EXTRA_PATH_METADATA = {
+    'static/favicon.ico': {'path': 'favicon.ico'},
+}
 
 PLUGIN_PATHS = ['plugins']
 PLUGINS = ['pygments_css', 'yarn']

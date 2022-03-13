@@ -1,11 +1,8 @@
 {% extends "articles.html" %}
+{% import "macros/headline.html" as headline with context %}
 
 {% block title %}{{ SITENAME }} - {{ tag }}{% endblock %}
 
-{% block content_title %}
-<h3>#failed mit dem Tag {{ tag }}</h3>
-{% endblock %}
-
-{% block content_image %}
-<img class="img-responsive" src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/tags.jpg" />
-{% endblock %}
+{% block headline %}
+{{ headline.with_image("#failed mit dem Tag %s"|format(tag), img="tags.jpg") }}
+{% endblock headline %}

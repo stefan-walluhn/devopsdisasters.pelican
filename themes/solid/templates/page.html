@@ -1,21 +1,12 @@
 {% extends "base.html" %}
+{% import "macros/headline.html" as headline with context %}
+
 {% block html_lang %}{{ page.lang }}{% endblock %}
 
 {% block title %}{{ SITENAME }} - {{ page.title|striptags }}{%endblock%}
 
 {% block headline %}
-<div id="headerwrap">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <h1>{{ page.title }}</h1>
-      </div>
-      <div class="col-md-8 offset-md-2 himg">
-        <img src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/error.jpg" class="img-responsive" />
-      </div>
-    </div>
-  </div>
-</div>
+{{ headline.with_image(page['title'], img="error.jpg") }}
 {% endblock headline %}
 
 {% block content %}

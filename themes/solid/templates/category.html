@@ -1,8 +1,8 @@
 {% extends "articles.html" %}
+{% import "macros/headline.html" as headline with context %}
 
 {% block title %}{{ SITENAME }} - {{ category }}{% endblock %}
 
-{% block content_title %}
-<h3>#failed in der Kategorie {{ category }}</h3>
-{% endblock %}
-
+{% block headline %}
+{{ headline.with_image("#failed in der Kategorie %s"|format(category), img="failed.jpg") }}
+{% endblock headline %}

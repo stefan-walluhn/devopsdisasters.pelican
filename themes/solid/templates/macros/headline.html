@@ -1,0 +1,14 @@
+{% macro with_image(headline, img="home.jpg") -%}
+<div id="headerwrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h1>{{ headline }}</h1>
+      </div>
+      <div class="col-md-8 offset-md-2 himg">
+        <img src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/{{ img }}" class="img-responsive" />
+      </div>
+    </div>
+  </div>
+</div>
+{%- endmacro %}

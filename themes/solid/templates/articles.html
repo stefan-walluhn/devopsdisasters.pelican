@@ -8,11 +8,6 @@
 <div class="container content">
   <div class="row">
     <div class="col-md-8">
-      <p>
-      {% block content_image %}
-      <img class="img-responsive" src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/failed.jpg" />
-      {% endblock %}
-      </p>
       {% for article in articles_page.object_list %}
       <h3><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h3>
       <div class="article-info">
