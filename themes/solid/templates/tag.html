@@ -4,5 +4,5 @@
 {% block title %}{{ SITENAME }} - {{ tag }}{% endblock %}
 
 {% block headline %}
-{{ headline.with_image("#failed mit dem Tag %s"|format(tag), img="tags.jpg") }}
+{{ headline.with_image("#failed mit dem Tag \"%s\""|format(tag), img="tags.jpg") }}
 {% endblock headline %}
