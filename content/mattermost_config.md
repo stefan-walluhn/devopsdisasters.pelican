@@ -1,8 +1,8 @@
 Title: Config handling full circle (und immernoch daneben)
 Date: 2022-03-13 16:26
-Category: config handling
+Category: Config handling
 Tags: Config, Deployment
-Quote: weil sich das so 'prima' automatisieren lässt...
+Quote: Weil sich das so 'prima' automatisieren lässt...
 
 Viele Teams nutzen Slack. Weniger Teams sind sich der Probleme von SaaS-Lösungen
 auf US-Infrastruktur bewusst (Stichwort [Schremms
@@ -69,7 +69,7 @@ generieren. Dann alles auf read-only gesetzt, damit niemend von hinten
 angeschlichen kommt und heimlich an der sauber gemanagten Konfiguration
 fummelt.
 
-Setup fertig, Deployment ausgerollt, Mattermost gestartet...
+Setup fertig... Deployment ausgerollt... Mattermost gestartet...
 
     :::console
     $mattermost -c config/config.json
