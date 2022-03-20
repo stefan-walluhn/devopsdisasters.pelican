@@ -2,7 +2,7 @@
 {% import "macros/headline.html" as headline with context %}
 
 {% block headline %}
-{{ headline.with_image("Call for Disasters: input[&aelig;t]devopsdisasters.net") }}
+{{ headline.with_image("What could possibly go wrong?") }}
 {% endblock headline %}
 
 {% block content %}
@@ -11,6 +11,18 @@
     <div class="col-lg-4 offset-lg-1">
       <h4>Abgründe und Gruseligkeiten aus der Operations-Welt</h4>
       <p>Software will nicht nur gebaut, sondern auch betrieben werden. Spätestens, wenn es sich beim Production Environment nicht länger um Wohnzimmerprovider, Standard-Webspace und FTP handelt, wird schnell deutlich, was ein Stück Code wirklich taugt, ob es skaliert, oder ob das, was in der Entwicklungsumgebung noch ganz nett aussah im Betrieb für ernsthafte Schmerzen sorgt. Doch nicht nur die Software selbst hat Grusel-Potential...</p>
+    </div>
+    <div class="col-lg-3">
+      <h4>#failed</h4>
+      <div class="hline"></div>
+      {% for article in articles %}
+      <p>
+        <a href="{{ SITEURL }}/{{ article.url }}">
+          <i class="fa fa-angle-right"></i>
+          {{ article.title }}
+        </a>
+      </p>
+      {% endfor %}
     </div>
     <div class="col-lg-3">
       <h4>Talks</h4>
@@ -31,18 +43,6 @@
         <dd><a href="https://docs.google.com/presentation/d/1RK69LrGBnqAtklhiuBZZHSdDSDw6Ys1qT0rF2aJKTWI">Slides (Google)</a></dd>
         <dd><a href="https://media.ccc.de/v/rc3-49321-devops_disasters_3_1">Recording</a></dd>
       </dl>
-    </div>
-    <div class="col-lg-3">
-      <h4>#failed</h4>
-      <div class="hline"></div>
-      {% for article in articles %}
-      <p>
-        <a href="{{ SITEURL }}/{{ article.url }}">
-          <i class="fa fa-angle-right"></i>
-          {{ article.title }}
-        </a>
-      </p>
-      {% endfor %}
     </div>
   </div>
 </div>
