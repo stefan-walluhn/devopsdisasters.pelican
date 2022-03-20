@@ -142,6 +142,7 @@ a:hover, a:focus {
 	background-color: #384452;
 	border-color: #384452;
 	margin: 4px;
+	font-size: 0.8em;
 }
 
 .btn-theme:hover,
