@@ -54,10 +54,10 @@ a {
 	-ms-transition: background-color .4s linear, color .4s linear;
 	transition: background-color .4s linear, color .4s linear;
 }
-a:hover,
-a:focus {
-  text-decoration: none;
-  color:#01b2fe;
+
+a:hover, a:focus {
+	text-decoration: none;
+	color:#01b2fe;
 }
 
 ::-moz-selection  {
@@ -186,7 +186,6 @@ a:focus {
 
 #headerwrap {
 	background-color: #00b3fe;
-/*      min-height: 550px; */
 	padding-top: 100px;
 	padding-bottom: 0px;
 	text-align: center;
