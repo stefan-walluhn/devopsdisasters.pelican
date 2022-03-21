@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := output
+.DEFAULT_GOAL := static
 
 bin/pip:
 	python -m venv .
@@ -10,9 +10,13 @@ bin/pelican: bin/pip requirements.txt
 .PHONY: install
 install: bin/pelican
 
-.PHONY: output
-output: install
+.PHONY: static
+static: install
 	./bin/pelican content -t themes/solid
+
+.PHONY: deploy
+deploy: clean static
+	rsync -av --delete -e ssh output www.devopsdisasters.net:/srv/www/net.devopsdisasters.www/
 
 .PHONY: clean
 clean:
