@@ -3,6 +3,7 @@ Date: 2022-03-20 22:04
 Category: Monitoring
 Tags: Monitoring
 Quote: Wie Jede:r weiß, hat JEDER Monate 31 Tage
+Summary: Der Code von Monitoring-Plugins spielt für gewöhnlich in einer eigenen Liga: Leider tendenziell in der Kreisliga. Das Phänomen scheint so systematisch zu sein, dass es eine eigene Kategorie an DevOps-Desastern rechtfertigen würde.
 
 Der Code von Monitoring-Plugins spielt für gewöhnlich in einer eigenen Liga:
 Leider tendenziell in der Kreisliga. Das Phänomen scheint so systematisch zu

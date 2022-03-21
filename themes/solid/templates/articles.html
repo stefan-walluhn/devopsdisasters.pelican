@@ -5,10 +5,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="container content">
+<div class="container content mtb">
   <div class="row">
     <div class="col-md-8">
       {% for article in articles_page.object_list %}
+      {% if not loop.first %}
+      <div class="hline"></div>
+      <div class="spacing"></div>
+      {% endif %}
       <h3><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h3>
       <div class="article-info">
         <time class="published" datetime="{{ article.date.isoformat() }}">Veröffentlicht: {{ article.locale_date }} </time> |
