@@ -16,7 +16,7 @@ publish: install
 
 .PHONY: deploy
 deploy: publish
-	rsync -av --delete -e ssh htdocs www.devopsdisasters.net:/srv/www/net.devopsdisasters.www/
+	rsync -a --delete -e ssh htdocs www.devopsdisasters.net:/srv/www/net.devopsdisasters.www/
 
 .PHONY: clean
 clean:
