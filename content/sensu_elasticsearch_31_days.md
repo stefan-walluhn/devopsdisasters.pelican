@@ -2,7 +2,7 @@ Title: Der Monat hat 31 Tage
 Date: 2022-03-20 22:04
 Category: Monitoring
 Tags: Monitoring
-Quote: Wie Jede:r weiß, hat JEDER Monate 31 Tage
+Quote: Wie Jede:r weiß, hat JEDER Monat 31 Tage
 Summary: Der Code von Monitoring-Plugins spielt für gewöhnlich in einer eigenen Liga: Leider tendenziell in der Kreisliga. Das Phänomen scheint so systematisch zu sein, dass es eine eigene Kategorie an DevOps-Desastern rechtfertigen würde.
 
 Der Code von Monitoring-Plugins spielt für gewöhnlich in einer eigenen Liga:
@@ -17,7 +17,7 @@ Ops-Menschen entwickelt, die ihren Software-Stack monitoren müssen. Und in dem
 Maße, wie die Dev-Fraktion die Aspekte von stabilen Operations nicht auf dem
 Schirm hat, mangelt es in der Gegenrichtung an fundiertem Dev-Wissen rund um
 [Clean Code](https://www.youtube.com/watch?v=7EmboKQH8lM) und saubere
-Software-Architektur (...und wenn ich dem Feadback aus unseren Dev-Teams
+Software-Architektur (...und wenn ich dem Feedback aus unseren Dev-Teams
 Glauben schenken darf, bin ich nicht frei von diesem Phänomen *hust*). Deswegen
 heißt diese Seite auch Dev**Ops**-Disasters, oder was habt ihr erwartet?
 
@@ -34,7 +34,7 @@ Wenn nun das Sensu-Plugin ums Eck kommt und in die Elasticsearch-Datenbank
 schaut, um die oben beschriebenen Indizes zu inspizieren, muss es herausfinden,
 welche Indizes untersucht werden sollen. Will ich beispielsweise wissen, ob in
 der letzten Woche sinnvolle Daten geschrieben worden sind oder es signifikante
-Außreißer gibt, die ein Fehlverhalten andeuten, müssen die letzten sieben
+Ausreißer gibt, die ein Fehlverhalten andeuten, müssen die letzten sieben
 Indizes betrachtet werden. Will ich sicherstellen, dass alte Logdaten sauber
 gelöscht werden, um z.B. den Anforderungen der DSGVO zu genügen, brauche ich
 alle Indizes älter als 3 Monate. Das Sensu-Plugin muss also ausrechnen, welche
@@ -78,8 +78,8 @@ Im Quelltext finden sich darüber hinaus noch weitere kühne Annahmen:
 ## Lessons learned?
 
 Der Umgang mit Datum, Uhrzeit und Zeitzonen ist kompliziert und voller
-Fallstricke. Neben naheliegenden Stollpersteinen wie Zeitumstellung,
-Schaltjahren und Zeitzonen gibt es weniger offensichtliche Schmankerl a la Zeit
+Fallstricke. Neben naheliegenden Stolpersteinen wie Zeitumstellung,
+Schaltjahren und Zeitzonen gibt es weniger offensichtliche Schmankerl à la Zeit
 vor dem
 [01.01.1970](https://www.wired.com/2001/09/unix-tick-tocks-to-a-billion/) oder
 die Zeitzone
