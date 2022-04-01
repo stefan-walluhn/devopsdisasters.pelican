@@ -1,6 +1,7 @@
 Title: #!/bin/sh sudo
 Date: 2022-04-01 21:24
 Category: Monitoring
+Tags: Monitoring, Nagios
 Quote: sudo in 'nen Script zu schreiben muss eh dazu führen, dass man sofort mit dem nassen Handtuch verprügelt wird!
 Summary: Eigentlich ist es ganz simpel: Du schreibst ein Script. Und in diesem Script willst du irgendetwas am System erledigen und benötigst besondere Zugriffsrechte. Und dafür gibt es ja `sudo`. Also schreibst du in dein Script `sudo ...`. Arg! Nein! Nicht machen!!! Ende des Artikels.
 
