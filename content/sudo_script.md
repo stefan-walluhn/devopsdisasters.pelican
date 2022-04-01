@@ -110,13 +110,13 @@ Für komplexere Setups bieten sich [Access Control
 Lists](https://wiki.archlinux.org/title/Access_Control_Lists) an. Auch eine
 Entkoppelung durch Service-Architekturen, APIs oder
 [Interprozesskommunikation](https://de.wikipedia.org/wiki/Interprozesskommunikation)
-ist denkbar.  In jedem Fall möchte aber ich als Admin des Systems die Wahl
+ist denkbar.  In jedem Fall aber möchte ich als Admin des Systems die Wahl
 haben, wie ich den Zugriff auf die benötigten Ressourcen einräume, und nicht
 vor ein hart eingebautes `sudo` gestellt werden, welches mir meine eigenen
 Werkzeuge aus der Hand nimmt und dafür das falsche Tool zurück reicht. Das ist
 schlicht und ergreifend "not your department"!
 
 Und überhaupt, was ist da eigentlich grundsätzlich schiefgelaufen, dass die
-Abfrage der Version eines Systems das zugrundeliegende Software-Repository als
+Abfrage der Version einer Software das zugrundeliegende Software-Repository als
 dirty flaggen muss? Warum ist eine reine Abfrage eines Zustands nicht frei von
 Seiteneffekten?
