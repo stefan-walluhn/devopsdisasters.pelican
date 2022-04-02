@@ -3,23 +3,22 @@ Date: 2022-04-01 21:24
 Category: Monitoring
 Tags: Monitoring, Nagios
 Quote: sudo in 'nen Script zu schreiben muss eh dazu führen, dass man sofort mit dem nassen Handtuch verprügelt wird!
-Summary: Eigentlich ist es ganz simpel: Du schreibst ein Script. Und in diesem Script willst du irgendetwas am System erledigen und benötigst besondere Zugriffsrechte. Und dafür gibt es ja `sudo`. Also schreibst du in dein Script `sudo ...`. Arg! Nein! Nicht machen!!! Ende des Artikels.
+Summary: Eigentlich ist es ganz simpel: Du schreibst ein Script. Und in diesem Script willst du irgendetwas am System erledigen und benötigst besondere Zugriffsrechte. Und dafür gibt es ja `sudo`. Also schreibst du in dein Script `sudo ...` Arg! Nein! Nicht machen!!! Ende des Artikels.
 
 Eigentlich ist es ganz simpel: Du schreibst ein Script. Und in diesem Script
 willst du irgendetwas am System erledigen und benötigst besondere
 Zugriffsrechte. Und dafür gibt es ja `sudo`. Also schreibst du in dein Script
-`sudo ...`.
+`sudo ...`
 
 Arg! Nein! Nicht machen!!! Ende des Artikels.
 
 Okay, okay. Da die Konstruktion
-[immer](https://github.com/sensu-plugins/sensu-plugins-varnish/blob/41a3f116b7431acd4f7481bbc3f2a8b8df3ccaf5/bin/metrics-varnish.rb#L80-L84)
-[wieder](https://github.com/sensu-plugins/sensu-plugins-zfs/blob/2268b75e643069f8a78aa3b8942cb585fdc070d0/lib/sensu-plugins-zfs/zpool.rb#L19-L20)
+[immer wieder](https://github.com/sensu-plugins/sensu-plugins-varnish/blob/41a3f116b7431acd4f7481bbc3f2a8b8df3ccaf5/bin/metrics-varnish.rb#L80-L84)
 vorkommt, scheint es angebracht, ein paar Zeilen zu dem Thema zu verlieren. Zur
 Veranschaulichung des Problems werfen wir einen Blick in ein Nagios-Plugin für
-[pfSense](https://www.pfsense.org/). Aufgabe des Monitoring-Plugins ist es, auf
-Updates zu prüfen und zu alarmieren, wenn ein solches vorliegt. Und hier der
-entsprechende Code [^nagios_plugin_pfsense_code]:
+[pfSense](https://www.pfsense.org/). Aufgabe des Plugins ist es, auf Updates zu
+prüfen und zu alarmieren, wenn ein solches vorliegt. Und hier der entsprechende
+Code [^nagios_plugin_pfsense_code]:
 
     :::php
     if (file_exists("{$g['varrun_path']}/pkg.dirty")) {
@@ -34,7 +33,7 @@ entsprechende Code [^nagios_plugin_pfsense_code]:
 
 Jaja, Qualität und Style von Monitoring-Code hatten wir bereits im [letzten
 Artikel]({filename}sensu_elasticsearch_31_days.md). Das nehmen wir diesmal als
-gegeben hin und widmen uns einzig und allein dem `sudo`-Teil. Obiger Code wird
+gegeben hin und betrachten einzig und allein den `sudo`-Teil. Obiger Code wird
 von einem Monitoring-Agenten auf dem zu überwachenden System ausgeführt. Der
 Agent sollte aus Sicherheitsgründen nicht als Root-User ausgeführt werden, da
 wir dem Monitoring keinen Vollzugriff auf das zu überwachende System einräumen
@@ -56,7 +55,7 @@ Und im schlechtesten Fall:
     :::console
     [sudo] password for root:
 
-Sudo ist eine externe Abhängigkeit des Scripts, und nur, weil jedes Ubuntu das
+Sudo ist eine externe Abhängigkeit des Scripts. Und nur, weil jedes Ubuntu das
 Sudo-Paket standardmäßig mitbringt, bedeutet das noch lange nicht, dass unter
 jeder Linux- oder Unix-Umgebung `sudo` als Kommando bereitsteht. Und selbst
 wenn es das tut, gewährt Sudo zusätzliche Berechtigungen für einen
@@ -83,8 +82,8 @@ verlockend:
   `varrun_path` gesetzt wird, welche sich dynamisch ändern kann und die wir in
   der Sudo-Config trotzdem hart coden müssten), verletzen damit das
   [DRY-Prinzip](https://de.wikipedia.org/wiki/Don%E2%80%99t_repeat_yourself)
-  und rennen dann bei etwaigen Updates des Monitoring-Scripts obskuren
-  Fehlerszenarien hinterher.
+  und rennen dann bei etwaigen Updates des Plugins obskuren Fehlerszenarien
+  hinterher.
 
 Und bei all dem Durcheinander, welches eine solche Konstruktion bis hierhin
 schon angerichtet hat, dieses DevOps-Desaster birgt noch einen weiteren Aspekt:
@@ -93,7 +92,15 @@ Script einen Shell-Call ausführen. Es muss also den eigenen Kontext verlassen
 und einen weiteren Prozess starten. In diesem Beispiel, um ganz banal eine
 Datei zu touchen und anschließend zu löschen; beides Operationen, die sich
 deutlich besser mit den Bordmitteln von PHP und damit im Kontext des
-eigentlichen Programm-Codes abbilden lassen würden.
+eigentlichen Programm-Codes abbilden lassen würden. In deutlich drastischer
+Konsequenz zeigt sich das an folgendem Code-Beispiel aus einem weiteren
+Monitoring-Plugin [^sensu_plugins_zfs_code]:
+
+    :::ruby
+    @state = `sudo zpool status #{name} | grep '^ state: ' | cut -d ' ' -f 3`.strip
+    @capacity = `sudo zpool get -H capacity #{@name} | awk '{print $3}' | cut -d '%' -f1`.strip.to_i
+
+[^sensu_plugins_zfs_code]:<https://github.com/sensu-plugins/sensu-plugins-zfs/blob/2268b75e643069f8a78aa3b8942cb585fdc070d0/lib/sensu-plugins-zfs/zpool.rb#L19-L20>
 
 Okay, das alles muss irgendwie anders gehen. Und für einen anderen Ansatz legen
 wir Sudo erst einmal zurück in die Werkzeugkiste. Sudo ist ein Tool, um auf
@@ -106,7 +113,7 @@ Unix, und Linux im Besonderen, kennt Berechtigungen und bringt diverse Konzepte
 mit, um den Zugriff auf Ressourcen zu verwalten. So gibt es neben Benutzern
 auch Gruppen. Für den hier aufgezeigten Fall wäre es denkbar, eine Gruppe für
 das Repo-Management anzulegen, die benötigten Ressourcen für den Zugriff durch
-die Gruppe freizugeben und dem Monitoring-Agenten in diese Gruppe aufzunehmen.
+die Gruppe freizugeben und den Monitoring-Agenten in diese Gruppe aufzunehmen.
 Für komplexere Setups bieten sich [Access Control
 Lists](https://wiki.archlinux.org/title/Access_Control_Lists) an. Auch eine
 Entkoppelung durch Service-Architekturen, APIs oder
