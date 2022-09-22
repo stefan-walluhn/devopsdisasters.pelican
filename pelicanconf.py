@@ -22,6 +22,8 @@ EXTRA_PATH_METADATA = {
     'static/favicon.ico': {'path': 'favicon.ico'},
 }
 
+TYPOGRIFY = True
+
 PLUGIN_PATHS = ['plugins']
 PLUGINS = ['pygments_css', 'yarn']
 
