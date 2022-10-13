@@ -7,8 +7,15 @@ Quote: Das ist schon so richtig bekloppt, einen Parameter 'Interface' zu nennen 
 Im Netz geistert dieser [alte
 Witz](https://martinfowler.com/bliki/TwoHardThings.html) herum: 
 
-> There are only two hard things in Computer Science; naming; cache
-> invalidation; async callbacks and off-by-one errors.
+> There are only two hard things in Computer Science:
+>
+> 1\. Naming
+>
+> 2\. Cache invalidation
+>
+> 7\. Async callbacks
+>
+> 3\. Off-by-one errors
 
 Hier und heute geht es um
 [Naming](https://medium.com/@pabashani.herath/clean-code-naming-conventions-4cac223de3c6).
@@ -94,7 +101,7 @@ Doku](https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html) zum Parameter
 > using --listen-address. A simple wildcard, consisting of a trailing '\*', can
 > be used in --interface and --except-interface options. 
 
-Ja, ich hab doch oben geschrieben, dass es Programme gibt, die uns verwirren
+Ja, ich hab doch bereits geschrieben, dass es Programme gibt, die uns verwirren
 wollen! Hier geht wirklich alles drunter und drüber. Nicht nur, dass Dnsmasq
 frech an Interfaces bindet, an die es gar nicht binden soll, es wirft hier auch
 noch zusätzlich IP-Adressen in den Ring und bringt damit Dinge zusammen, die
