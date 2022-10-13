@@ -1,0 +1,159 @@
+Title: You name it!
+Date: 2022-10-13 20:21
+Category: Config handling
+Tags: Dnsmasq, Config, Naming
+Quote: Das ist schon so richtig bekloppt, einen Parameter 'Interface' zu nennen mit dem Ergebnis, dass sich der Dienst trotzdem an alle Interfaces bindet
+
+Im Netz geistert dieser [alte
+Witz](https://martinfowler.com/bliki/TwoHardThings.html) herum: 
+
+> There are only two hard things in Computer Science; naming; cache
+> invalidation; async callbacks and off-by-one errors.
+
+Hier und heute geht es um
+[Naming](https://medium.com/@pabashani.herath/clean-code-naming-conventions-4cac223de3c6).
+Falsches Naming ist fies. Nur so ungefähr richtiges Naming ist fieser. Wenn wir
+uns einer Software oder einem neuen Feature nähern, müssen wir uns ein mentales
+Modell der jeweiligen Funktionsweise erarbeiten. Unser initiales Modell ist sehr
+wahrscheinlich falsch und der Prozess des Verstehens von Programmen und
+Algorithmen besteht im Kern darin, dieses mentale Modell Stück für Stück an die
+realen Bestandteile und Funktionsweisen einer Software anzupassen. Dabei
+stellen wir fest, dass wir manchmal zu einfach denken, oder zu kompliziert,
+oder dass eine Softwarelösung [viel zu komplex
+gestrickt](https://towardsdatascience.com/re-evaluating-kafka-issues-and-alternatives-for-real-time-395573418f27)
+ist, oder eben das zu lösende Problem [viel zu simpel]({tag}Ansible) angeht.
+Wir merken, dass eine Software aus mehr Komponenten besteht als anfangs
+gedacht, oder dass wir in unserem Modell Dinge ewartet haben, die es in der
+Software in dieser Form gar nicht gibt. Benutzt eine Software verwirrende oder
+inkorrekte Namen für ihre Komponenten oder Funktionen, dann greifen wir auf
+falsche Vorstellungen zurück, wenn wir unser mentales Modell aufbauen.
+
+Wenn in einem Programm von "Button" die Rede ist, denken wir an einen Knopf,
+den wir mit der Maus anklicken können, und nicht an eine Ansteckplakette.
+Offensichtlich ist es geschickter, den Begriff "Badge" zu nutzen, um Plaketten
+zu beschreiben, wenn ein Programm seine Anwender:innen nicht vollkommen
+verwirren möchte.
+
+Es erweckt nun leider den Anschein, dass es einige Programme darauf anlegen,
+uns dennoch zu verwirren. [Dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html)
+ist ein solcher Kandidat.
+
+Dnsmasq ist ein DNS-Server und DHCP-Server. Viele von euch nutzen Dnsmasq, oft
+ohne es zu wissen: Dnsmasq ist darauf optimiert, seinen Dienst auf
+Embedded-Devices zu verrichten und tut dies erfolgreich auf diversen
+Plaste-Routern, die euch eure DSL-Anbieter neben den Telefonanschluss zimmern.
+
+[DNS](https://howdns.works/de/) ist als System zur Auflösung von Domains zu
+IP-Adressen komplex und die Konfiguration eines vollwärtigen DNS-Servers nicht
+trivial. Daher bietet es sich an, Dnsmasq als leichtgewichtige Alternative auch
+auf Servern oder PCs einzusetzen, wenn nur eben fix ein schmales DNS-Setup
+benötigt wird. Beispiele sind kleine LANs oder VPNs, die zur besseren Nutzung
+interne Domains einsetzen wollen.
+
+Nun kommt es - gerade auf PCs unter modernen Linux-Distributionen - vor, dass
+dort bereits ein [eigener
+DNS-Resolver](https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html)
+läuft, um lokale DNS-Anfragen zu cachen und damit schnellere Zugriffe auf
+Domains zu ermöglichen. Diese lokalen Resolver lauschen auf dem
+Loopback-Interface auf Port 53, dem Standard-Port für DNS. Soll nun zusätzlich
+Dnsmasq zum Einsatz kommen und der bestehende Resolver nicht komplett ersetzt
+werden, müssen wir das neue Stück Software daran hindern, auch auf dem DNS-Port
+des Loopback-Interfaces lauschen zu wollen, denn da ist ja bereits besetzt.
+
+Dnsmasq kennt die Option `--interface` bzw. sogar `--except-interface`. Wie
+praktisch! Das ist doch genau das, was wir hier brauchen! Also fix
+reingeklöppelt in die Config, Service durchgestartet...
+
+Mööööp
+
+Falsch gedacht! Dnsmasq greift dreist nach dem Loopback-Interface - und
+scheitert mit Bravour. Und als ob das Verhalten bis hierhin nicht bereits
+obskur genug wäre, haben wir uns zusätzlich eine schöne Race-Condition ins
+System gebastelt: Beim nächsten Boot werden sich beide DNS-Resolver um den
+DNS-Port prügeln; wer zuerst da ist, bekommt den Port. Und wer sich jetzt
+dachte, na dann macht eben Dnsmasq die Namensauflösung... wieder falsch.
+Dnsmasq schnappt sich den Port, antwortet aber nicht im Geringsten auf
+DNS-Anfragen.
+
+Whaaaat?
+
+Offensichtlich passt unser mentales Modell nicht und die Software verhält sich
+nicht so, wie wir das unter den gegebenen Umständen erwarten würden. Da hilft
+nur ein Blick in [die
+Doku](https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html) zum Parameter
+`--interface`. Und da finden wir folgende drollige Erklärung:
+
+> Listen only on the specified interface(s). Dnsmasq automatically adds the
+> loopback (local) interface to the list of interfaces to use when the
+> --interface option is used. [...] On Linux, when --bind-interfaces or
+> --bind-dynamic are in effect, IP alias interface labels (eg "eth1:0") are
+> checked, rather than interface names. In the degenerate case when an
+> interface has one address, this amounts to the same thing but when an
+> interface has multiple addresses it allows control over which of those
+> addresses are accepted. The same effect is achievable in default mode by
+> using --listen-address. A simple wildcard, consisting of a trailing '\*', can
+> be used in --interface and --except-interface options. 
+
+Ja, ich hab doch oben geschrieben, dass es Programme gibt, die uns verwirren
+wollen! Hier geht wirklich alles drunter und drüber. Nicht nur, dass Dnsmasq
+frech an Interfaces bindet, an die es gar nicht binden soll, es wirft hier auch
+noch zusätzlich IP-Adressen in den Ring und bringt damit Dinge zusammen, die
+[nicht zusammen
+gehören](https://de.wikipedia.org/wiki/Internetprotokollfamilie#TCP/IP-Referenzmodell).
+Das Schauspiel lässt sich sogar in der Gegenrichtung aufführen, wie die Doku
+zum Parameter `--listen-address` zeigt:
+
+> Listen on the given IP address(es). [...] Note that if no --interface option
+> is given, but --listen-address is, dnsmasq will not automatically listen on
+> the loopback interface. To achieve this, its IP address, 127.0.0.1, must be
+> explicitly given as a --listen-address option. 
+
+Na, habt ihr jetzt gedacht, dass sich Dnsmasq nicht an das Loopback-Interface
+bindet, wenn ihr hier NICHT 127.0.0.1 in den Parameter schreibt? Zum dritten
+Mal reingefallen! Dnsmasq greift fröhlich weiter nach dem Loopback-Interface.
+
+An irgendeinem Punkt muss den Entwickler:innen von Dnsmasq auch aufgefallen
+sein, dass diese Herangehensweise zu Chaos und Durcheinander führt. In der Doku
+zu einem weiteren Parameter `--bind-interfaces` (wtf, wir hatten doch bereits
+`--interface`?) findet sich in einem Nebensatz die Auflösung des Rätsels und
+erlaubt uns endlich unser mentales Modell zu vervollständigen:
+
+> On systems which support it, dnsmasq binds the wildcard address, even when it
+> is listening on only some interfaces. It then discards requests that it
+> shouldn't reply to. This has the advantage of working even when interfaces
+> come and go and change address. This option forces dnsmasq to really bind
+> only the interfaces it is listening on. About the only time when this is
+> useful is when running another nameserver (or another instance of dnsmasq) on
+> the same machine.
+
+Was uns die Doku hier ganz nebenbei verrät: Unser mentales Modell ist falsch.
+Dnsmasq bindet sich in der Standard-Konfiguration überhaupt nicht an
+spezifische Interfaces. Der Parameter `--interface` dient nur dazu,
+irgendwelche internen Filter der Software mit Informationen zu versorgen und
+eingehende DNS-Anfragen auf Basis dieser Filter zu verwerfen. Habt ihr glatt
+überlesen, dass in der Doku die ganze Zeit von "listen", und nicht von "bind"
+geschrieben wird, was? Erst die zusätzliche(!!!) Angabe des Parameters
+`--bind-interfaces` (jetzt als reines Feature-Flag ohne Wert) führt zum
+erwarteten Verhalten.
+
+## Lessons learned?
+
+Die Option `--interface` hat uns direkt auf die falsche Fährte gelenkt. Wir
+konfigurieren eine Server-Software. Aus naheliegenden Gründen dürfen wir hier
+davon ausgehen, dass ein Parameter mit dem Namen INTERFACE! die
+Netzwerk-Interfaces eines Systems meint, und nicht irgendwelche internen
+Filter, die ein tieferes Verständnis über die spezifische Funktionsweise der
+Software veraussetzen.
+
+Dnsmasq will mit Interfaces zurechtkommen, die zur Laufzeit dynamisch entstehen
+oder verschwinden? Nachzuvollziehen bei einer Software, die auf Routern mit
+verschiedendsten Netzwerk-, VPN- und Switch-Ports betrieben wird. Aber dann
+nennt die Parameter doch einfach entsprechend: `--allow-interfaces`,
+`--deny-interfaces`, `--allow-ip-addresses`, ... Dann lassen sich die
+Anwendungsdomänen sauber trennen und es wird sofort klar, dass hier Allow- und
+Deny-Listen bestückt werden. Wir als Nutzer:innen würden ein nachvollziehbares
+mentales Modell entwickeln und in Verbindung mit einem korrekt arbeitenden
+Paramenter `--listen-interfaces` wäre erkennbar, was hier vor sich geht.
+
+Aus einer solchen Perspektive wird dann auch deutlich, wie unsinnig ein
+Parameter mit dem Namen `--listen-address` eigentlich ist.
