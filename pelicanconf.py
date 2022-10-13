@@ -23,6 +23,7 @@ EXTRA_PATH_METADATA = {
 }
 
 TYPOGRIFY = True
+TYPOGRIFY_IGNORE_TAGS = ['pre', 'code', 'blockquote']
 
 PLUGIN_PATHS = ['plugins']
 PLUGINS = ['pygments_css', 'yarn']

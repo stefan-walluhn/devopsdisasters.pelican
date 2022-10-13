@@ -60,6 +60,16 @@ a:hover, a:focus {
 	color:#01b2fe;
 }
 
+blockquote {
+	padding: 0 20px;
+	border-left: 5px solid #eee;
+	font-style: italic;
+}
+
+blockquote p {
+	color: #666;
+}
+
 ::-moz-selection  {
 	color: #fff;
 	text-shadow:none;
