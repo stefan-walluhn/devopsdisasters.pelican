@@ -30,7 +30,7 @@ oder dass eine Softwarelösung [viel zu komplex
 gestrickt](https://towardsdatascience.com/re-evaluating-kafka-issues-and-alternatives-for-real-time-395573418f27)
 ist, oder eben das zu lösende Problem [viel zu simpel]({tag}Ansible) angeht.
 Wir merken, dass eine Software aus mehr Komponenten besteht als anfangs
-gedacht, oder dass wir in unserem Modell Dinge ewartet haben, die es in der
+gedacht, oder dass wir in unserem Modell Dinge erwartet haben, die es in der
 Software in dieser Form gar nicht gibt. Benutzt eine Software verwirrende oder
 inkorrekte Namen für ihre Komponenten oder Funktionen, dann greifen wir auf
 falsche Vorstellungen zurück, wenn wir unser mentales Modell aufbauen.
@@ -51,7 +51,7 @@ zu verrichten und tut dies erfolgreich auf diversen Plaste-Routern, die euch
 eure Provider neben den Telefonanschluss zimmern.
 
 [DNS](https://howdns.works/de/) ist als System zur Auflösung von Domains zu
-IP-Adressen komplex und die Konfiguration eines vollwärtigen DNS-Servers nicht
+IP-Adressen komplex und die Konfiguration eines vollwertigen DNS-Servers nicht
 trivial. Daher bietet es sich an, Dnsmasq als leichtgewichtige Alternative auch
 auf Servern oder PCs einzusetzen, wenn nur eben fix ein schmales DNS-Setup
 benötigt wird. Beispiele sind kleine LANs oder VPNs, die zur besseren Nutzung
@@ -162,27 +162,27 @@ falsche Fährte gelenkt. Wir konfigurieren eine Server-Software. Aus
 naheliegenden Gründen dürfen wir hier davon ausgehen, dass ein Parameter mit
 dem Namen "interface" die Netzwerk-Interfaces eines Systems meint, und nicht
 irgendwelche internen Filter, die ein tieferes Verständnis über die spezifische
-Funktionsweise der Software veraussetzen. Gleiches gilt für einen Parameter,
+Funktionsweise der Software voraussetzen. Gleiches gilt für einen Parameter,
 der den Begriff "listen" benutzt und selbstverständlich die naheliegende
 Vorstellung zulässt, dass sich hier eine Software an eine IP-Adresse bindet.
 
 Dnsmasq will mit Interfaces und IP-Adressen zurechtkommen, die zur Laufzeit
 dynamisch entstehen oder verschwinden? Nachzuvollziehen bei einer Software, die
-auf Routern mit verschiedendsten Netzwerk-, VPN- und Switch-Ports betrieben
+auf Routern mit verschiedensten Netzwerk-, VPN- und Switch-Ports betrieben
 wird. Aber dann nennt die Parameter doch einfach entsprechend:
 `--allow-interfaces`, `--deny-interfaces`, `--allow-ip-addresses`, ... Dann
 lassen sich die Anwendungsdomänen sauber trennen und es wird sofort klar, dass
 hier Allow- und Deny-Listen bestückt werden. Wir als Nutzer:innen würden ein
 nachvollziehbares mentales Modell entwickeln und in Verbindung mit einem
-korrekt arbeitenden Paramenter `--listen-address` wäre erkennbar, was hier
-vor sich geht.
+korrekt arbeitenden Parameter `--listen-address` wäre erkennbar, was hier vor
+sich geht.
 
 Falsches Naming, welches wie im Fall von Dnsmasq sogar mit bereits gesetzten
 Bedeutungen kollidiert, führt zu [enormer
 Verwirrung](https://www.google.com/search?q=dnsmasq+failed+to+create+listening+socket+for+port+53+Address+already+in+use)
 bei den Anwender:innen. Wenn ihr Software schreibt und merkt, dass euer Naming
 nicht wirklich passend ausdrückt, was ein Algorithmus treibt oder sich die
-Funktionalität über die Zeit verschiebt, dann nehmt euch unbedingt die Zeit,
+Funktionalität über die Zeit verschiebt, dann nehmt euch unbedingt die Zeit
 über saubere Begriffe nachzudenken. Oft finden sich mit etwas Abstand
 passendere Bezeichnungen, die zu einem besseren Verständnis der implementierten
 Konzepte führen.
