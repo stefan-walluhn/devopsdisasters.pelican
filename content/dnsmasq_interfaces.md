@@ -32,7 +32,7 @@ ist, oder eben das zu lösende Problem [viel zu simpel]({tag}Ansible) angeht.
 Wir merken, dass eine Software aus mehr Komponenten besteht als anfangs
 gedacht, oder dass wir in unserem Modell Dinge erwartet haben, die es in der
 Software in dieser Form gar nicht gibt. Benutzt eine Software verwirrende oder
-inkorrekte Namen für ihre Komponenten oder Funktionen, dann greifen wir auf
+inkorrekte Begriffe für ihre Komponenten oder Funktionen, dann greifen wir auf
 falsche Vorstellungen zurück, wenn wir unser mentales Modell aufbauen.
 
 Wenn in einem Programm von "Button" die Rede ist, denken wir an einen Knopf,
@@ -58,14 +58,15 @@ benötigt wird. Beispiele sind kleine LANs oder VPNs, die zur besseren Nutzung
 interne Domains einsetzen wollen.
 
 Nun kommt es - gerade auf PCs unter modernen Linux-Distributionen - vor, dass
-dort bereits ein [eigener
-DNS-Resolver](https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html)
+dort bereits ein
+[DNS-Resolver](https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html)
 läuft, um lokale DNS-Anfragen zu cachen und damit schnellere Zugriffe auf
-Domains zu ermöglichen. Diese lokalen Resolver lauschen unter der lokalen IP
-127.0.0.1 auf Port 53, dem Standard-Port für DNS. Soll nun zusätzlich Dnsmasq
-zum Einsatz kommen und der bestehende Resolver nicht komplett ersetzt werden,
-müssen wir das neue Stück Software daran hindern, auch auf dem DNS-Port der
-lokalen IP lauschen zu wollen, denn da ist ja bereits besetzt.
+Domains zu ermöglichen. Diese Resolver lauschen unter der IP des
+Loopback-Interfaces 127.0.0.1 auf Port 53, dem Standard-Port für DNS. Soll nun
+zusätzlich Dnsmasq zum Einsatz kommen und der bestehende Resolver nicht
+komplett ersetzt werden, müssen wir das neue Stück Software daran hindern, auch
+auf dem DNS-Port der lokalen IP lauschen zu wollen, denn da ist ja bereits
+besetzt.
 
 Dnsmasq kennt die Option `--listen-address`. Wie praktisch! Das ist doch genau
 das, was wir hier brauchen! Also fix eine externe IP reingeklöppelt in die
@@ -152,8 +153,8 @@ geschrieben wird, was? Die ganze Welt meint dasselbe, wenn von "bind to" oder
 Dnsmasq leistet wacker Widerstand! Erst die zusätzliche(!!!) Angabe des
 Parameters `--bind-interfaces` (jetzt als reines Feature-Flag ohne Wert) führt
 zum erwarteten Verhalten. Dass sich Dnsmasq auch in diesem Fall an IP-Adressen
-und nicht an Interfaces bindet, soll hier nur noch als Nebensächlichkeit
-benannt werden.
+und nicht an Interfaces bindet, soll hier nur als Nebensächlichkeit benannt
+werden.
 
 ## Lessons learned?
 
@@ -163,21 +164,21 @@ naheliegenden Gründen dürfen wir hier davon ausgehen, dass ein Parameter mit
 dem Namen "interface" die Netzwerk-Interfaces eines Systems meint, und nicht
 irgendwelche internen Filter, die ein tieferes Verständnis über die spezifische
 Funktionsweise der Software voraussetzen. Gleiches gilt für einen Parameter,
-der den Begriff "listen" benutzt und selbstverständlich die naheliegende
-Vorstellung zulässt, dass sich hier eine Software an eine IP-Adresse bindet.
+der den Begriff "listen" benutzt und die naheliegende Erwartung auslöst, dass
+sich hier eine Software an eine IP-Adresse bindet.
 
 Dnsmasq will mit Interfaces und IP-Adressen zurechtkommen, die zur Laufzeit
-dynamisch entstehen oder verschwinden? Nachzuvollziehen bei einer Software, die
+dynamisch entstehen oder verschwinden? Nachvollziehbar bei einer Software, die
 auf Routern mit verschiedensten Netzwerk-, VPN- und Switch-Ports betrieben
 wird. Aber dann nennt die Parameter doch einfach entsprechend:
 `--allow-interfaces`, `--deny-interfaces`, `--allow-ip-addresses`, ... Dann
 lassen sich die Anwendungsdomänen sauber trennen und es wird sofort klar, dass
 hier Allow- und Deny-Listen bestückt werden. Wir als Nutzer:innen würden ein
 nachvollziehbares mentales Modell entwickeln und in Verbindung mit einem
-korrekt arbeitenden Parameter `--listen-address` wäre erkennbar, was hier vor
-sich geht.
+korrekt arbeitenden Parameter `--listen-address` (im Sinne von "bind to") wäre
+erkennbar, was hier vor sich geht.
 
-Falsches Naming, welches wie im Fall von Dnsmasq sogar mit bereits gesetzten
+Falsches Naming, welches wie im Fall von Dnsmasq sogar mit gesetzten
 Bedeutungen kollidiert, führt zu [enormer
 Verwirrung](https://www.google.com/search?q=dnsmasq+failed+to+create+listening+socket+for+port+53+Address+already+in+use)
 bei den Anwender:innen. Wenn ihr Software schreibt und merkt, dass euer Naming
