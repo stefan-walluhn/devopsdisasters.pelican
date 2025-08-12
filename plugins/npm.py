@@ -9,19 +9,19 @@ from pelican.generators import Generator
 log = logging.getLogger(__name__)
 
 
-class YarnStaticGenerator(Generator):
+class NpmStaticGenerator(Generator):
     def __init__(self, context, settings, path, theme, output_path, **kwargs):
-        self.yarn_tmp_modules = settings.get('YARN_TMP_PATH', 'node_modules')
-        self.yarn_target_modules = os.path.join(
-            output_path, settings.get('YARN_TARGET_PATH', 'node_modules')
+        self.npm_tmp_modules = settings.get('NPM_TMP_PATH', 'node_modules')
+        self.npm_target_modules = os.path.join(
+            output_path, settings.get('NPM_TARGET_PATH', 'node_modules')
         )
-        self.yarn_executable = settings.get('YARN_EXECUTABLE', 'yarn')
-        self.yarn_args = settings.get(
-            'YARN_ARGS',
+        self.npm_executable = settings.get('NPM_EXECUTABLE', 'npm')
+        self.npm_args = settings.get(
+            'NPM_ARGS',
             ['--production', '--frozen-lockfile', '--silent']
         )
 
-        super(YarnStaticGenerator, self).__init__(
+        super(NpmStaticGenerator, self).__init__(
             context, settings, path, theme, output_path, **kwargs
         )
 
@@ -29,28 +29,27 @@ class YarnStaticGenerator(Generator):
         try:
             subprocess.run(
                 [
-                    self.yarn_executable, 'install',
-                    '--modules-folder', self.yarn_tmp_modules,
-                    *self.yarn_args
+                    self.npm_executable, 'install',
+                    *self.npm_args
                 ],
                 capture_output=True,
                 check=True,
                 encoding='utf-8'
             )
         except subprocess.CalledProcessError as e:
-            log.error('yarn failed: %s', e.stderr)
+            log.error('npm failed: %s', e.stderr)
             raise e
 
-        log.debug('yarn succeeded')
+        log.debug('npm succeeded')
 
     def generate_output(self, writer):
-        shutil.copytree(self.yarn_tmp_modules, self.yarn_target_modules,
+        shutil.copytree(self.npm_tmp_modules, self.npm_target_modules,
                         ignore=shutil.ignore_patterns('.*'),
                         dirs_exist_ok=True)
 
 
 def get_generators(pelican_object):
-    return YarnStaticGenerator
+    return NpmStaticGenerator
 
 
 def register():

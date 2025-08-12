@@ -26,8 +26,8 @@ TYPOGRIFY = True
 TYPOGRIFY_IGNORE_TAGS = ['pre', 'code', 'blockquote']
 
 PLUGIN_PATHS = ['plugins']
-PLUGINS = ['pygments_css', 'yarn']
+PLUGINS = ['pygments_css', 'npm']
 
-YARN_TARGET_PATH = 'js'
+NPM_TARGET_PATH = 'js'
 
 PYGMENTS_STYLE = 'tango'
