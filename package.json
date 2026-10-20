@@ -11,7 +11,7 @@
     "@openfonts/raleway_latin": "^1.44.2",
     "bootstrap": "^4.6.1",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.6.0"
+    "jquery": "^4.0.0"
   },
   "devDependencies": {},
   "scripts": {
